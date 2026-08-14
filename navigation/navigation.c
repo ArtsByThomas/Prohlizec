@@ -3,7 +3,7 @@
 #include "../css/css.h"
 #include "../utils/string/str_utils.h"
 #include "../utils/syscall/syscalls.h"
-#include "../js/headers/js_runtime.h" // Přidáno pro js_run_page_scripts a js_timers_reset
+#include "../js/headers/js_runtime.h"
 #include "/navigation.h"
 #include <stdint.h>
 
@@ -62,9 +62,8 @@ int sys_http_get(uint32_t ip, uint16_t port, const char *path, char *buf, int ma
     return syscall5(1015, (long)ip, (long)port, (long)path, (long)buf, (long)max_len);
 }
 
+
 // --- POST varianty (formuláře) ---
-
-
 
 // sys_http_post: HTTP POST s tělem requestu 
 int sys_http_post(uint32_t ip, uint16_t port, const char *path,
@@ -117,9 +116,6 @@ void nav_history_push(const char* url) {
 
 
 void navigate_to(const char* url);
-
-
-
 
 void nav_go_back(void) {
     if (nav_history_pos <= 0) return; 
@@ -193,6 +189,7 @@ void debug_print_int(int num) {
     
     debug_print(buf);
 }
+
 // Sdílená "po stažení" logika pro navigate_to (GET) i navigate_to_post
 
 void process_navigation_response(const char* full_url, const char* path, int bytes) {
@@ -233,11 +230,9 @@ void process_navigation_response(const char* full_url, const char* path, int byt
     }
 }
 
-
+// Metoda pro vyhledávání url (IP i doména) 
 void navigate_to(const char* url) {
-   
     js_timers_reset();
-
     char domain[128];
     char path[128];
     int is_https = 1;  
